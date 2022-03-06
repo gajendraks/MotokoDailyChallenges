@@ -1,4 +1,5 @@
 import Array "mo:base/Array";
+import Iter "mo:base/Iter";
 import Nat "mo:base/Nat";
 
 
@@ -68,8 +69,28 @@ actor {
         return Array.filter<Nat>(arr, eq);
     };
     
-    // public func selection_sort(n: Nat) : async Nat {
-        
-    // };
+    public func selection_sort(arr: [Nat]) : async [Nat] {
+        if (arr.size() <= 1) {
+            return arr;
+        };
+        var arr_mut: [var Nat] = Array.thaw(arr);
+        let size1: Nat = arr.size() - 1;
+        let size2: Nat = arr.size() - 2;
+        for (i in Iter.range(0, size2)) {
+            var min_val = arr_mut[i];
+            var minIndex = i;
+            for (j in Iter.range(i+1, size1)) {
+                if (arr_mut[j] < min_val) {
+                    min_val:=arr_mut[j];
+                    minIndex:=j;
+                };
+            };
+            if (minIndex != i) {
+                arr_mut[minIndex]:=arr_mut[i];
+                arr_mut[i]:=min_val;
+            };
+        };
+        return Array.freeze(arr_mut);
+    };
 
 };
